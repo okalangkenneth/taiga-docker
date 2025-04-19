@@ -1,40 +1,35 @@
 version: "3.5"
 
-x-environment: 
-&default-back-environment
+x-environment: &default-back-environment
   # These environment variables will be used by taiga-back and taiga-async.
   # Database settings
   POSTGRES_DB: "taiga"
   POSTGRES_USER: "postgres"
   POSTGRES_PASSWORD: "postgres123"
   POSTGRES_HOST: "taiga-db"
-
   # Taiga settings
   TAIGA_SECRET_KEY: "j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl"
   TAIGA_SITES_SCHEME: "http"
   TAIGA_SITES_DOMAIN: "${TAIGA_DOMAIN}"
   TAIGA_SUBPATH: ""
-
- # Email settings.
+  # Email settings.
   EMAIL_BACKEND: "django.core.mail.backends.console.EmailBackend"
-  DEFAULT_FROM_EMAIL: "no-reply@example.com""
+  DEFAULT_FROM_EMAIL: "no-reply@example.com"
   EMAIL_USE_TLS: "False"
   EMAIL_USE_SSL: "False"
   EMAIL_HOST: ""
   EMAIL_PORT: "25"
   EMAIL_HOST_USER: ""
   EMAIL_HOST_PASSWORD: ""
-
   # Rabbitmq settings
   RABBITMQ_USER: "taiga"
   RABBITMQ_PASS: "taiga123"
-
- # Telemetry settings
+  # Telemetry settings
   ENABLE_TELEMETRY: "false"
   PUBLIC_REGISTER_ENABLED: "True"  # Enables public registration in backend
 
-# These volumens will be used by taiga-back and taiga-async.
-  x-volumes: &default-back-volumes
+x-volumes: &default-back-volumes
+  # These volumens will be used by taiga-back and taiga-async.
   - taiga-static-data:/taiga-back/static
   - taiga-media-data:/taiga-back/media
 
@@ -46,7 +41,7 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres123"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 2s
       timeout: 15s
       retries: 5
@@ -101,8 +96,8 @@ services:
   taiga-front:
     image: taigaio/taiga-front:latest
     environment:
-      TAIGA_URL: "${TAIGA_SCHEME}://${TAIGA_DOMAIN}"
-      TAIGA_WEBSOCKETS_URL: "${WEBSOCKETS_SCHEME}://${TAIGA_DOMAIN}"
+      TAIGA_URL: "${TAIGA_DOMAIN}"
+      TAIGA_WEBSOCKETS_URL: "${TAIGA_DOMAIN}
       PUBLIC_REGISTER_ENABLED: "true"
     networks:
       - taiga
@@ -140,22 +135,27 @@ services:
     networks:
       - taiga
 
+  # This is the main service that Coolify will use
   taiga-gateway:
     image: nginx:1.19-alpine
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.taiga-gateway.rule=PathPrefix(`/`)"
-      - "traefik.http.services.taiga-gateway.loadbalancer.server.port=80"
-  volumes:
+    ports:
+      - "9000:80"
+    volumes:
       - ./taiga-gateway/taiga.conf:/etc/nginx/conf.d/default.conf
       - taiga-static-data:/taiga/static
       - taiga-media-data:/taiga/media
-  networks:
+    networks:
       - taiga
-  depends_on:
+    depends_on:
       - taiga-front
       - taiga-back
       - taiga-events
+    labels:
+      coolify.managed: "true"
+      coolify.default: "true"
+      traefik.enable: "true"
+      traefik.http.routers.taiga-gateway.rule: "PathPrefix(`/`)"
+      traefik.http.services.taiga-gateway.loadbalancer.server.port: "80"
 
 volumes:
   taiga-static-data:
