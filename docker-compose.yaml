@@ -10,8 +10,7 @@ x-environment: &default-back-environment
   # Taiga settings
   TAIGA_SECRET_KEY: "j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl"
   TAIGA_SITES_SCHEME: "http"
-  # We'll use environment variables that will be populated by Coolify
-  TAIGA_SITES_DOMAIN: "${COOLIFY_DOMAIN}"
+  TAIGA_SITES_DOMAIN: "z4s4gkckkkkokc8gccwswwkgw.95.217.187.120.sslip.io"
   TAIGA_SUBPATH: ""
   # Email settings.
   EMAIL_BACKEND: "django.core.mail.backends.console.EmailBackend"
@@ -65,6 +64,8 @@ services:
         condition: service_started
       taiga-async-rabbitmq:
         condition: service_started
+    labels:
+      coolify.domain: "x48gc840o4wkkko0k4owog04.95.217.187.120.sslip.io"
 
   taiga-async:
     image: taigaio/taiga-back:latest
@@ -80,6 +81,8 @@ services:
         condition: service_started
       taiga-async-rabbitmq:
         condition: service_started
+    labels:
+      coolify.domain: "rocc4coeke040k0kk549g8ws.95.217.187.120.sslip.io"
 
   taiga-async-rabbitmq:
     image: rabbitmq:3.8-management-alpine
@@ -93,15 +96,19 @@ services:
       - taiga-async-rabbitmq-data:/var/lib/rabbitmq
     networks:
       - taiga
+    labels:
+      coolify.domain: "rccw4gwsgk0wc4csk0oswcg8.95.217.187.120.sslip.io"
 
   taiga-front:
     image: taigaio/taiga-front:latest
     environment:
-      TAIGA_URL: "http://${COOLIFY_DOMAIN}"
-      TAIGA_WEBSOCKETS_URL: "ws://${COOLIFY_DOMAIN}"
+      TAIGA_URL: "http://z4s4gkckkkkokc8gccwswwkgw.95.217.187.120.sslip.io"
+      TAIGA_WEBSOCKETS_URL: "ws://z4s44kw400sgc0g0008c0c4k.95.217.187.120.sslip.io"
       PUBLIC_REGISTER_ENABLED: "true"
     networks:
       - taiga
+    labels:
+      coolify.domain: "v0k0owoww00cgkg8gcgcsogs.95.217.187.120.sslip.io"
 
   taiga-events:
     image: taigaio/taiga-events:latest
@@ -114,6 +121,8 @@ services:
     depends_on:
       taiga-events-rabbitmq:
         condition: service_started
+    labels:
+      coolify.domain: "z4s44kw400sgc0g0008c0c4k.95.217.187.120.sslip.io"
 
   taiga-events-rabbitmq:
     image: rabbitmq:3.8-management-alpine
@@ -127,6 +136,8 @@ services:
       - taiga-events-rabbitmq-data:/var/lib/rabbitmq
     networks:
       - taiga
+    labels:
+      coolify.domain: "m08k8440wo8ogo4osco4ow8s.95.217.187.120.sslip.io"
 
   taiga-protected:
     image: taigaio/taiga-protected:latest
@@ -135,6 +146,8 @@ services:
       SECRET_KEY: "j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl"
     networks:
       - taiga
+    labels:
+      coolify.domain: "o8kg8gkgwws008wo4k848kc.95.217.187.120.sslip.io"
 
   # This is the main service that Coolify will use
   taiga-gateway:
@@ -154,8 +167,9 @@ services:
     labels:
       coolify.managed: "true"
       coolify.default: "true"
+      coolify.domain: "z4s4gkckkkkokc8gccwswwkgw.95.217.187.120.sslip.io"
       traefik.enable: "true"
-      traefik.http.routers.taiga-gateway.rule: "PathPrefix(`/`)"
+      traefik.http.routers.taiga-gateway.rule: "Host(`z4s4gkckkkkokc8gccwswwkgw.95.217.187.120.sslip.io`)"
       traefik.http.services.taiga-gateway.loadbalancer.server.port: "80"
 
 volumes:
