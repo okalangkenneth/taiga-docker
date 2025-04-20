@@ -106,16 +106,17 @@ services:
   taiga-front:
   image: taigaio/taiga-front:latest
   environment:
-    TAIGA_URL: http://a8ocgwgo40kc4wc48kg0c8g.95.217.187.120.sslip.io
-    TAIGA_WEBSOCKETS_URL: ws://ju040o4ow800s4ksw08o4k4c4.95.217.187.120.sslip.io
+    TAIGA_URL: "http://h80o0wk8skc0coc0ooo8wkc0.95.217.187.120.sslip.io"
+    TAIGA_WEBSOCKETS_URL: "ws://ju040o4ow800s4ksw08o4k4c4.95.217.187.120.sslip.io"
     PUBLIC_REGISTER_ENABLED: "true"
   networks:
     - taiga
   depends_on:
     - taiga-back
   labels:
-    coolify.domain: a8ocgwgo40kc4wc48kg0c8g.95.217.187.120.sslip.io
+    coolify.domain: "a8ocgwgo40kc4wc48kg0c8g.95.217.187.120.sslip.io"
     coolify.default: "true"
+
 
   taiga-events:
     image: taigaio/taiga-events:latest
