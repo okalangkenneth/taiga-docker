@@ -29,7 +29,10 @@ services:
       TAIGA_SITES_DOMAIN: a8ocgwgo40kc4wc48kg0c8g.95.217.187.120.sslip.io
       TAIGA_SUBPATH: ""
       PUBLIC_REGISTER_ENABLED: "True"
-      EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
+      ENABLE_EMAIL_VERIFICATION: "False"  # Add this
+      SKIP_EMAIL_VERIFICATION: "True"     # Add this as well
+      EMAIL_VERIFICATION_URL: ""          # Set to empty
+      EMAIL_BACKEND: "django.core.mail.backends.console.EmailBackend"  # Use console for dev
       DEFAULT_FROM_EMAIL: no-reply@example.com
       EMAIL_USE_TLS: "False"
       EMAIL_USE_SSL: "False"
@@ -40,8 +43,6 @@ services:
       RABBITMQ_USER: taiga
       RABBITMQ_PASS: taiga123
       ENABLE_TELEMETRY: "False"
-      ports:
-      - "8000:8000"  # Add this line to expose the Django admin
     volumes:
       - taiga-static-data:/taiga-back/static
       - taiga-media-data:/taiga-back/media
