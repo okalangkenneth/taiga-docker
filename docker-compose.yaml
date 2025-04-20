@@ -26,7 +26,7 @@ services:
       POSTGRES_HOST: taiga-db
       TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
       TAIGA_SITES_SCHEME: http
-      TAIGA_SITES_DOMAIN: sgkwckooo4kks0w0s4c4occ8s4.95.217.187.120.sslip.io
+      TAIGA_SITES_DOMAIN: a8ocgwgo40kc4wc48kg0c8g.95.217.187.120.sslip.io
       TAIGA_SUBPATH: ""
       PUBLIC_REGISTER_ENABLED: "True"
       EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
@@ -49,6 +49,8 @@ services:
       - taiga-async-rabbitmq
     networks:
       - taiga
+    labels:
+      coolify.domain: "oos4w40ogoskw40c8oss804w.95.217.187.120.sslip.io"
 
   taiga-async:
     image: taigaio/taiga-back:latest
@@ -60,7 +62,7 @@ services:
       POSTGRES_HOST: taiga-db
       TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
       TAIGA_SITES_SCHEME: http
-      TAIGA_SITES_DOMAIN: sgkwckooo4kks0w0s4c4occ8s4.95.217.187.120.sslip.io
+      TAIGA_SITES_DOMAIN: a8ocgwgo40kc4wc48kg0c8g.95.217.187.120.sslip.io
       TAIGA_SUBPATH: ""
       PUBLIC_REGISTER_ENABLED: "True"
       EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
@@ -83,6 +85,8 @@ services:
       - taiga-async-rabbitmq
     networks:
       - taiga
+    labels:
+      coolify.domain: "gsc48k4sgk0kow0s84sgcwo8.95.217.187.120.sslip.io"
 
   taiga-async-rabbitmq:
     image: rabbitmq:3.8-management-alpine
@@ -96,18 +100,23 @@ services:
       - taiga-async-rabbitmq-data:/var/lib/rabbitmq
     networks:
       - taiga
+    labels:
+      coolify.domain: "g8ww0048sc84wosBkw4040c0.95.217.187.120.sslip.io"
 
   taiga-front:
     image: taigaio/taiga-front:latest
     environment:
-      TAIGA_URL: "http://sgkwckooo4kks0w0s4c4occ8s4.95.217.187.120.sslip.io"
-      TAIGA_WEBSOCKETS_URL: "ws://ejj8kgccc8o44cwwg8kss80g.95.217.187.120.sslip.io"
+      TAIGA_URL: "http://oos4w40ogoskw40c8oss804w.95.217.187.120.sslip.io"
+      TAIGA_WEBSOCKETS_URL: "ws://ju040o4ow800s4ksw08o4k4c4.95.217.187.120.sslip.io"
       TAIGA_SUBPATH: ""
       PUBLIC_REGISTER_ENABLED: "true"
     networks:
       - taiga
     depends_on:
       - taiga-back
+    labels:
+      coolify.domain: "a8ocgwgo40kc4wc48kg0c8g.95.217.187.120.sslip.io"
+      coolify.default: "true"
 
   taiga-events:
     image: taigaio/taiga-events:latest
@@ -119,6 +128,8 @@ services:
       - taiga
     depends_on:
       - taiga-events-rabbitmq
+    labels:
+      coolify.domain: "ju040o4ow800s4ksw08o4k4c4.95.217.187.120.sslip.io"
 
   taiga-events-rabbitmq:
     image: rabbitmq:3.8-management-alpine
@@ -132,6 +143,8 @@ services:
       - taiga-events-rabbitmq-data:/var/lib/rabbitmq
     networks:
       - taiga
+    labels:
+      coolify.domain: "tw4gcggkgokokkssg4sw808k.95.217.187.120.sslip.io"
 
   taiga-protected:
     image: taigaio/taiga-protected:latest
@@ -140,6 +153,8 @@ services:
       SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
     networks:
       - taiga
+    labels:
+      coolify.domain: "gg4cwwkgcww0okogckw4og00.95.217.187.120.sslip.io"
 
 volumes:
   taiga-db-data:
