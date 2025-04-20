@@ -29,10 +29,17 @@ services:
       TAIGA_SITES_DOMAIN: a8ocgwgo40kc4wc48kg0c8g.95.217.187.120.sslip.io
       TAIGA_SUBPATH: ""
       PUBLIC_REGISTER_ENABLED: "True"
-      DISABLE_EMAIL_VERIFICATION: "True"  # Changed to match Taiga's expected variable
-      ENABLE_TELEMETRY: "False"
+      EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
+      DEFAULT_FROM_EMAIL: no-reply@example.com
+      EMAIL_USE_TLS: "False"
+      EMAIL_USE_SSL: "False"
+      EMAIL_HOST: smtp.host.example.com
+      EMAIL_PORT: "587"
+      EMAIL_HOST_USER: user
+      EMAIL_HOST_PASSWORD: password
       RABBITMQ_USER: taiga
       RABBITMQ_PASS: taiga123
+      ENABLE_TELEMETRY: "False"
     volumes:
       - taiga-static-data:/taiga-back/static
       - taiga-media-data:/taiga-back/media
@@ -44,7 +51,6 @@ services:
       - taiga
     labels:
       coolify.domain: "oos4w40ogoskw40c8oss804w.95.217.187.120.sslip.io"
-
   taiga-async:
     image: taigaio/taiga-back:latest
     entrypoint: ["/taiga-back/docker/async_entrypoint.sh"]
