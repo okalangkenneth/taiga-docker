@@ -5,83 +5,102 @@ services:
     image: postgres:12.3
     environment:
       POSTGRES_DB: taiga
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres123
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - taiga-db-data:/var/lib/postgresql/data
     networks:
       - taiga
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   taiga-back:
     image: taigaio/taiga-back:latest
     environment:
-      # Database
       POSTGRES_DB: taiga
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres123
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_HOST: taiga-db
-      # Taiga settings
-      TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
-      TAIGA_SITES_SCHEME: http
-      TAIGA_SITES_DOMAIN: oos4w40ogoskw40c8oss804w.95.217.187.120.sslip.io
-      # Public registration
-      PUBLIC_REGISTER_ENABLED: "True"
-      # Email settings
-      EMAIL_BACKEND: "django.core.mail.backends.console.EmailBackend"
-      # Rabbitmq settings
-      RABBITMQ_USER: taiga
-      RABBITMQ_PASS: taiga123
+      TAIGA_SECRET_KEY: ${SECRET_KEY}
+      TAIGA_SITES_SCHEME: ${TAIGA_SCHEME}
+      TAIGA_SITES_DOMAIN: ${TAIGA_DOMAIN}
+      TAIGA_SUBPATH: ${SUBPATH}
+      PUBLIC_REGISTER_ENABLED: ${PUBLIC_REGISTER_ENABLED}
+      EMAIL_BACKEND: django.core.mail.backends.${EMAIL_BACKEND}.EmailBackend
+      DEFAULT_FROM_EMAIL: ${EMAIL_DEFAULT_FROM}
+      EMAIL_USE_TLS: ${EMAIL_USE_TLS}
+      EMAIL_USE_SSL: ${EMAIL_USE_SSL}
+      EMAIL_HOST: ${EMAIL_HOST}
+      EMAIL_PORT: ${EMAIL_PORT}
+      EMAIL_HOST_USER: ${EMAIL_HOST_USER}
+      EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      ENABLE_TELEMETRY: ${ENABLE_TELEMETRY}
     volumes:
       - taiga-static-data:/taiga-back/static
       - taiga-media-data:/taiga-back/media
     depends_on:
-      - taiga-db
-      - taiga-events-rabbitmq
-      - taiga-async-rabbitmq
+      taiga-db:
+        condition: service_healthy
+      taiga-events-rabbitmq:
+        condition: service_started
+      taiga-async-rabbitmq:
+        condition: service_started
     networks:
       - taiga
     labels:
       traefik.enable: "true"
-      traefik.http.routers.taiga-back.rule: "Host(`oos4w40ogoskw40c8oss804w.95.217.187.120.sslip.io`)"
+      traefik.http.routers.taiga-back.rule: "Host(`${TAIGA_DOMAIN}`) && (PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`))"
       traefik.http.services.taiga-back.loadbalancer.server.port: "8000"
 
   taiga-async:
     image: taigaio/taiga-back:latest
     entrypoint: ["/taiga-back/docker/async_entrypoint.sh"]
     environment:
-      # Database
       POSTGRES_DB: taiga
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres123
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_HOST: taiga-db
-      # Taiga settings
-      TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
-      TAIGA_SITES_SCHEME: http
-      TAIGA_SITES_DOMAIN: oos4w40ogoskw40c8oss804w.95.217.187.120.sslip.io
-      # Public registration
-      PUBLIC_REGISTER_ENABLED: "True"
-      # Email settings
-      EMAIL_BACKEND: "django.core.mail.backends.console.EmailBackend"
-      # Rabbitmq settings
-      RABBITMQ_USER: taiga
-      RABBITMQ_PASS: taiga123
+      TAIGA_SECRET_KEY: ${SECRET_KEY}
+      TAIGA_SITES_SCHEME: ${TAIGA_SCHEME}
+      TAIGA_SITES_DOMAIN: ${TAIGA_DOMAIN}
+      TAIGA_SUBPATH: ${SUBPATH}
+      PUBLIC_REGISTER_ENABLED: ${PUBLIC_REGISTER_ENABLED}
+      EMAIL_BACKEND: django.core.mail.backends.${EMAIL_BACKEND}.EmailBackend
+      DEFAULT_FROM_EMAIL: ${EMAIL_DEFAULT_FROM}
+      EMAIL_USE_TLS: ${EMAIL_USE_TLS}
+      EMAIL_USE_SSL: ${EMAIL_USE_SSL}
+      EMAIL_HOST: ${EMAIL_HOST}
+      EMAIL_PORT: ${EMAIL_PORT}
+      EMAIL_HOST_USER: ${EMAIL_HOST_USER}
+      EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      ENABLE_TELEMETRY: ${ENABLE_TELEMETRY}
     volumes:
       - taiga-static-data:/taiga-back/static
       - taiga-media-data:/taiga-back/media
     depends_on:
-      - taiga-db
-      - taiga-events-rabbitmq
-      - taiga-async-rabbitmq
+      taiga-db:
+        condition: service_healthy
+      taiga-events-rabbitmq:
+        condition: service_started
+      taiga-async-rabbitmq:
+        condition: service_started
     networks:
       - taiga
 
   taiga-async-rabbitmq:
     image: rabbitmq:3.8-management-alpine
     environment:
-      RABBITMQ_ERLANG_COOKIE: "taiga-async-rabbitmq-cookie"
-      RABBITMQ_DEFAULT_USER: taiga
-      RABBITMQ_DEFAULT_PASS: taiga123
-      RABBITMQ_DEFAULT_VHOST: taiga
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST}
     hostname: "taiga-async-rabbitmq"
     volumes:
       - taiga-async-rabbitmq-data:/var/lib/rabbitmq
@@ -91,37 +110,39 @@ services:
   taiga-front:
     image: taigaio/taiga-front:latest
     environment:
-      TAIGA_URL: "http://oos4w40ogoskw40c8oss804w.95.217.187.120.sslip.io"
-      TAIGA_WEBSOCKETS_URL: "ws://oos4w40ogoskw40c8oss804w.95.217.187.120.sslip.io"
+      TAIGA_URL: "${TAIGA_SCHEME}://${TAIGA_DOMAIN}"
+      TAIGA_WEBSOCKETS_URL: "${WEBSOCKETS_SCHEME}://${TAIGA_DOMAIN}"
+      TAIGA_SUBPATH: "${SUBPATH}"
       PUBLIC_REGISTER_ENABLED: "true"
-    depends_on:
-      - taiga-back
     networks:
       - taiga
+    depends_on:
+      - taiga-back
     labels:
       traefik.enable: "true"
-      traefik.http.routers.taiga-front.rule: "Host(`a8ocgwgo40kc4wc48kg0c8g.95.217.187.120.sslip.io`)"
+      traefik.http.routers.taiga-front.rule: "Host(`${TAIGA_DOMAIN}`)"
       traefik.http.services.taiga-front.loadbalancer.server.port: "80"
       coolify.default: "true"
 
   taiga-events:
     image: taigaio/taiga-events:latest
     environment:
-      RABBITMQ_USER: taiga
-      RABBITMQ_PASS: taiga123
-      TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      TAIGA_SECRET_KEY: ${SECRET_KEY}
     networks:
       - taiga
     depends_on:
-      - taiga-events-rabbitmq
+      taiga-events-rabbitmq:
+        condition: service_started
 
   taiga-events-rabbitmq:
     image: rabbitmq:3.8-management-alpine
     environment:
-      RABBITMQ_ERLANG_COOKIE: "taiga-events-rabbitmq-cookie"
-      RABBITMQ_DEFAULT_USER: taiga
-      RABBITMQ_DEFAULT_PASS: taiga123
-      RABBITMQ_DEFAULT_VHOST: taiga
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST}
     hostname: "taiga-events-rabbitmq"
     volumes:
       - taiga-events-rabbitmq-data:/var/lib/rabbitmq
@@ -131,13 +152,13 @@ services:
   taiga-protected:
     image: taigaio/taiga-protected:latest
     environment:
-      MAX_AGE: "360"
-      SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
+      MAX_AGE: ${ATTACHMENTS_MAX_AGE}
+      SECRET_KEY: ${SECRET_KEY}
     networks:
       - taiga
     labels:
       traefik.enable: "true"
-      traefik.http.routers.taiga-protected.rule: "Host(`oos4w40ogoskw40c8oss804w.95.217.187.120.sslip.io`) && PathPrefix(`/media/attachments/`)"
+      traefik.http.routers.taiga-protected.rule: "Host(`${TAIGA_DOMAIN}`) && PathPrefix(`/media/attachments/`)"
       traefik.http.services.taiga-protected.loadbalancer.server.port: "8003"
 
 volumes:
