@@ -40,6 +40,8 @@ services:
       RABBITMQ_USER: taiga
       RABBITMQ_PASS: taiga123
       ENABLE_TELEMETRY: "False"
+      ports:
+      - "8000:8000"  # Add this line to expose the Django admin
     volumes:
       - taiga-static-data:/taiga-back/static
       - taiga-media-data:/taiga-back/media
