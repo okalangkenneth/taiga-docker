@@ -23,7 +23,7 @@ services:
     dockerfile: Dockerfile.custom
     image: taigaio/taiga-back:latest
     environment:
-    - DJANGO_SETTINGS_MODULE=settings.cors
+      DJANGO_SETTINGS_MODULE=settings.cors
       POSTGRES_DB: taiga
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres123
