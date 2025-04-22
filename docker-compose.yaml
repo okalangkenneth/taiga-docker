@@ -31,6 +31,7 @@ services:
     volumes:
       - taiga-static-data:/taiga-back/static
       - taiga-media-data:/taiga-back/media
+      - ./settings/config.py:/taiga-back/settings/config.py:ro
     depends_on:
       - taiga-db
       - taiga-events-rabbitmq
@@ -127,7 +128,7 @@ services:
     image: nginx:alpine
     ports:
       - "9090:80"
-    volumes:
+    
     volumes:
       - ./taiga-gateway:/etc/nginx/conf.d:ro
       - taiga-static-data:/taiga-back/static:ro
