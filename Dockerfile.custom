@@ -1,3 +1,2 @@
 FROM taigaio/taiga-back:latest
 RUN pip install django-cors-headers
-COPY ./cors_settings.py /taiga-back/settings/cors.py
