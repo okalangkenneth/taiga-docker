@@ -23,15 +23,15 @@ services:
     dockerfile: Dockerfile.custom
     image: taigaio/taiga-back:latest
     environment:
-      DJANGO_SETTINGS_MODULE=settings.local
-      POSTGRES_DB: taiga
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres123
-      POSTGRES_HOST: taiga-db
-      TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
-      TAIGA_SITES_SCHEME: http
-      TAIGA_SITES_DOMAIN: h80o0wk8skc0coc0ooo8wkc0.95.217.187.120.sslip.io
-      PUBLIC_REGISTER_ENABLED: "True"
+      - DJANGO_SETTINGS_MODULE=settings.local
+      - POSTGRES_DB: taiga
+      - POSTGRES_USER: postgres
+      - POSTGRES_PASSWORD: postgres123
+      - POSTGRES_HOST: taiga-db
+      - TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
+      - TAIGA_SITES_SCHEME: http
+      - TAIGA_SITES_DOMAIN: h80o0wk8skc0coc0ooo8wkc0.95.217.187.120.sslip.io
+      - PUBLIC_REGISTER_ENABLED: "True"
     volumes:
       - taiga-static-data:/taiga-back/static
       - taiga-media-data:/taiga-back/media
