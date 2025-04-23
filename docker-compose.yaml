@@ -21,19 +21,18 @@ services:
     build: .
     image: taigaio/taiga-back:latest
     environment:
-      - DJANGO_SETTINGS_MODULE=settings.local
-      - POSTGRES_DB=taiga
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres123
-      - POSTGRES_HOST=taiga-db
-      - TAIGA_SECRET_KEY=j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
-      - TAIGA_SITES_SCHEME=http
-      - TAIGA_SITES_DOMAIN=h80o0wk8skc0coc0ooo8wkc0.95.217.187.120.sslip.io
-      - PUBLIC_REGISTER_ENABLED="True"
+      DJANGO_SETTINGS_MODULE: settings.local
+      POSTGRES_DB: taiga
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_HOST: taiga-db
+      TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
+      TAIGA_SITES_SCHEME: http
+      TAIGA_SITES_DOMAIN: h80o0wk8skc0coc0ooo8wkc0.95.217.187.120.sslip.io
+      PUBLIC_REGISTER_ENABLED: "True"
     volumes:
       - taiga-static-data:/taiga-back/static
       - taiga-media-data:/taiga-back/media
-      
     depends_on:
       - taiga-db
       - taiga-events-rabbitmq
@@ -45,16 +44,17 @@ services:
 
   taiga-async:
     image: taigaio/taiga-back:latest
-    entrypoint: ["/taiga-back/docker/async_entrypoint.sh"]
+    entrypoint:
+      - /taiga-back/docker/async_entrypoint.sh
     environment:
-      - POSTGRES_DB=taiga
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres123
-      - POSTGRES_HOST=taiga-db
-      - TAIGA_SECRET_KEY=j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
-      - TAIGA_SITES_SCHEME=http
-      - TAIGA_SITES_DOMAIN=xoswc8ckk0kcgwgkgw84gowg.95.217.187.120.sslip.io
-      - PUBLIC_REGISTER_ENABLED="True"
+      POSTGRES_DB: taiga
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_HOST: taiga-db
+      TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
+      TAIGA_SITES_SCHEME: http
+      TAIGA_SITES_DOMAIN: xoswc8ckk0kcgwgkgw84gowg.95.217.187.120.sslip.io
+      PUBLIC_REGISTER_ENABLED: "True"
     volumes:
       - taiga-static-data:/taiga-back/static
       - taiga-media-data:/taiga-back/media
@@ -74,7 +74,7 @@ services:
       RABBITMQ_DEFAULT_USER: taiga
       RABBITMQ_DEFAULT_PASS: taiga123
       RABBITMQ_DEFAULT_VHOST: taiga
-    hostname: "taiga-async-rabbitmq"
+    hostname: taiga-async-rabbitmq
     volumes:
       - taiga-async-rabbitmq-data:/var/lib/rabbitmq
     networks:
@@ -83,9 +83,9 @@ services:
   taiga-front:
     image: taigaio/taiga-front:latest
     environment:
-      - TAIGA_URL=http://h80o0wk8skc0coc0ooo8wkc0.95.217.187.120.sslip.io
-      - TAIGA_WEBSOCKETS_URL=ws://ju040o4ow800s4ksw08o4k4c4.95.217.187.120.sslip.io
-      - PUBLIC_REGISTER_ENABLED=true
+      TAIGA_URL: "http://h80o0wk8skc0coc0ooo8wkc0.95.217.187.120.sslip.io"
+      TAIGA_WEBSOCKETS_URL: "ws://ju040o4ow800s4ksw08o4k4c4.95.217.187.120.sslip.io"
+      PUBLIC_REGISTER_ENABLED: "true"
     depends_on:
       - taiga-back
     networks:
@@ -97,9 +97,9 @@ services:
   taiga-events:
     image: taigaio/taiga-events:latest
     environment:
-      - RABBITMQ_USER=taiga
-      - RABBITMQ_PASS=taiga123
-      - TAIGA_SECRET_KEY=j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
+      RABBITMQ_USER: taiga
+      RABBITMQ_PASS: taiga123
+      TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
     depends_on:
       - taiga-events-rabbitmq
     networks:
@@ -112,7 +112,7 @@ services:
       RABBITMQ_DEFAULT_USER: taiga
       RABBITMQ_DEFAULT_PASS: taiga123
       RABBITMQ_DEFAULT_VHOST: taiga
-    hostname: "taiga-events-rabbitmq"
+    hostname: taiga-events-rabbitmq
     volumes:
       - taiga-events-rabbitmq-data:/var/lib/rabbitmq
     networks:
@@ -121,14 +121,14 @@ services:
   taiga-protected:
     image: taigaio/taiga-protected:latest
     environment:
-      - MAX_AGE=360
-      - SECRET_KEY=j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
+      MAX_AGE: "360"
+      SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
     networks:
       - taiga
 
   taiga-gateway:
     image: nginx:alpine
-    
+    # no `ports:` here when using Coolify ingress
     volumes:
       - ./taiga-gateway:/etc/nginx/conf.d:ro
       - taiga-static-data:/taiga-back/static:ro
@@ -141,12 +141,12 @@ services:
     networks:
       - taiga
 
-   volumes:
-     taiga-db-data:
-     taiga-static-data:
-     taiga-media-data:
-     taiga-async-rabbitmq-data:
-     taiga-events-rabbitmq-data:
+volumes:
+  taiga-db-data:
+  taiga-static-data:
+  taiga-media-data:
+  taiga-async-rabbitmq-data:
+  taiga-events-rabbitmq-data:
 
-   networks:
-     taiga:
+networks:
+  taiga:
