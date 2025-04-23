@@ -124,6 +124,9 @@ services:
       - ./taiga-gateway:/etc/nginx/conf.d:ro
       - taiga-static-data:/taiga-back/static:ro
       - taiga-media-data:/taiga-back/media:ro
+    command: >
+      /bin/sh -c "ln -sf /etc/nginx/conf.d-not-used/taiga.conf /etc/nginx/conf.d/default.conf &&
+               nginx -g 'daemon off;'"
     depends_on:
       - taiga-front
       - taiga-back
