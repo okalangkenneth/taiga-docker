@@ -33,8 +33,7 @@ services:
     volumes:
       - taiga-static-data:/taiga-back/static
       - taiga-media-data:/taiga-back/media
-      - ./settings/config.py:/taiga-back/settings/config.py:ro
-      - ./settings/local.py:/taiga-back/settings/local.py:ro
+      
     depends_on:
       - taiga-db
       - taiga-events-rabbitmq
