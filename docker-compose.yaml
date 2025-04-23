@@ -19,7 +19,7 @@ services:
 
   taiga-back:
     build: .
-    image: taigaio/taiga-back:6.7.0
+    build: ./taiga-back-custom
     environment:
       DJANGO_SETTINGS_MODULE: settings.local
       POSTGRES_DB: taiga
@@ -41,7 +41,7 @@ services:
       - taiga
 
   taiga-async:
-    image: taigaio/taiga-back:6.7.0
+    build: ./taiga-back-custom
     entrypoint:
       - /taiga-back/docker/async_entrypoint.sh
     environment:
@@ -77,7 +77,7 @@ services:
       - taiga
 
   taiga-front:
-    image: taigaio/taiga-front:6.7.0
+    build: ./taiga-back-custom
     environment:
       TAIGA_URL: "http://nkgc4g4gs8wgwkgos0gc0kk4.95.217.187.120.sslip.io"
       PUBLIC_REGISTER_ENABLED: "true"
@@ -87,7 +87,7 @@ services:
       - taiga
 
   taiga-events:
-    image: taigaio/taiga-events:6.7.0
+    build: ./taiga-back-custom
     environment:
       RABBITMQ_USER: taiga
       RABBITMQ_PASS: taiga123
@@ -111,7 +111,7 @@ services:
       - taiga
 
   taiga-protected:
-    image: taigaio/taiga-protected:6.7.0
+    build: ./taiga-back-custom
     environment:
       MAX_AGE: "360"
       SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
