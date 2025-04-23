@@ -39,12 +39,11 @@ services:
       - taiga-async-rabbitmq
     networks:
       - taiga
-    labels:
-      coolify.domain: h80o0wk8skc0coc0ooo8wkc0.95.217.187.120.sslip.io
 
   taiga-async:
     image: taigaio/taiga-back:latest
-    entrypoint: ["/taiga-back/docker/async_entrypoint.sh"]
+    entrypoint:
+      - /taiga-back/docker/async_entrypoint.sh
     environment:
       POSTGRES_DB: taiga
       POSTGRES_USER: postgres
@@ -63,8 +62,6 @@ services:
       - taiga-async-rabbitmq
     networks:
       - taiga
-    labels:
-      coolify.domain: xoswc8ckk0kcgwgkgw84gowg.95.217.187.120.sslip.io
 
   taiga-async-rabbitmq:
     image: rabbitmq:3.8-management-alpine
@@ -88,9 +85,6 @@ services:
       - taiga-back
     networks:
       - taiga
-      labels:
-      - "coolify.domain=nkgc4g4gs8wgwkgos0gc0kk4.95.217.187.120.sslip.io"
-    
 
   taiga-events:
     image: taigaio/taiga-events:latest
@@ -126,7 +120,6 @@ services:
 
   taiga-gateway:
     image: nginx:alpine
-    # no `ports:` here—Coolify will proxy on your behalf
     volumes:
       - ./taiga-gateway:/etc/nginx/conf.d:ro
       - taiga-static-data:/taiga-back/static:ro
@@ -139,8 +132,7 @@ services:
     networks:
       - taiga
     labels:
-      # auto-generated domain for the gateway
-      coolify.domain: nkgc4g4gs8wgwkgos0gc0kk4.95.217.187.120.sslip.io
+      - "coolify.domain=nkgc4g4gs8wgwkgos0gc0kk4.95.217.187.120.sslip.io"
 
 volumes:
   taiga-db-data:
