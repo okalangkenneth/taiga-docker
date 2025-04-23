@@ -111,7 +111,7 @@ services:
       - taiga
 
   taiga-protected:
-    image: taigaio/taiga-protected:6.8.0
+    image: taigaio/taiga-protected:6.7.0
     environment:
       MAX_AGE: "360"
       SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
