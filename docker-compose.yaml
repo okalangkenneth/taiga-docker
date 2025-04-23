@@ -141,12 +141,12 @@ services:
     networks:
       - taiga
 
-  volumes:
-    taiga-db-data:
-    taiga-static-data:
-    taiga-media-data:
-    taiga-async-rabbitmq-data:
-    taiga-events-rabbitmq-data:
+   volumes:
+     taiga-db-data:
+     taiga-static-data:
+     taiga-media-data:
+     taiga-async-rabbitmq-data:
+     taiga-events-rabbitmq-data:
 
-  networks:
-    taiga:
+   networks:
+     taiga:
