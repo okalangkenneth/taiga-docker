@@ -126,21 +126,7 @@ services:
     networks:
       - taiga
 
-  taiga-gateway:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-    volumes:
-      - ./taiga-gateway:/etc/nginx/conf.d:ro
-      - taiga-static-data:/taiga-back/static:ro
-      - taiga-media-data:/taiga-back/media:ro
-    depends_on:
-      - taiga-front
-      - taiga-back
-      - taiga-events
-      - taiga-protected
-    networks:
-      - taiga
+  
 
 volumes:
   taiga-db-data:
