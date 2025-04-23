@@ -2,6 +2,9 @@ cat > settings/local.py << 'EOF'
 from .config import *
 
 # your site-specific overrides go here
+# django-cors-headers
+INSTALLED_APPS += ["corsheaders"]
+MIDDLEWARE.insert(0, "corsheaders.middleware.CorsMiddleware")
 
 # enable django-cors-headers
 CORS_ALLOWED_ORIGINS = [
