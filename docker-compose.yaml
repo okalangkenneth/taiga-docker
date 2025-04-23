@@ -83,12 +83,13 @@ services:
     image: taigaio/taiga-front:latest
     environment:
       TAIGA_URL: "http://nkgc4g4gs8wgwkgos0gc0kk4.95.217.187.120.sslip.io"
-      TAIGA_WEBSOCKETS_URL: "ws://ju040o4ow800s4ksw08o4k4c4.95.217.187.120.sslip.io"
       PUBLIC_REGISTER_ENABLED: "true"
     depends_on:
       - taiga-back
     networks:
       - taiga
+      labels:
+      - "coolify.domain=nkgc4g4gs8wgwkgos0gc0kk4.95.217.187.120.sslip.io"
     
 
   taiga-events:
