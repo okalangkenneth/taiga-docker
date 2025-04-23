@@ -17,8 +17,8 @@ services:
       timeout: 5s
       retries: 5
 
+  
   taiga-back:
-   taiga-back:
 - build:
 -   context: .
 -   dockerfile: Dockerfile.custom
