@@ -1,1 +1,7 @@
+# settings/config.py.dev.example
+from .common import *
+
+DEBUG = True
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+# any other dev-only overrides…
 
