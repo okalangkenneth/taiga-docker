@@ -1,0 +1,14 @@
+# Dockerfile.custom
+FROM taigaio/taiga-back:latest
+
+USER root
+
+# 1) Install django-cors-headers so your CORS overrides work
+RUN pip install django-cors-headers
+
+# 2) Copy in your override files
+COPY settings/config.py /taiga-back/settings/config.py
+COPY settings/local.py  /taiga-back/settings/local.py
+
+USER taiga
+
