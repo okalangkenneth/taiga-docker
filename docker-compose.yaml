@@ -44,8 +44,7 @@ services:
 
   taiga-async:
     image: taigaio/taiga-back:latest
-    entrypoint:
-      - /taiga-back/docker/async_entrypoint.sh
+    entrypoint: ["/taiga-back/docker/async_entrypoint.sh"]
     environment:
       POSTGRES_DB: taiga
       POSTGRES_USER: postgres
@@ -128,7 +127,7 @@ services:
 
   taiga-gateway:
     image: nginx:alpine
-    # no `ports:` here when using Coolify ingress
+    # no `ports:` here—Coolify will proxy on your behalf
     volumes:
       - ./taiga-gateway:/etc/nginx/conf.d:ro
       - taiga-static-data:/taiga-back/static:ro
@@ -140,6 +139,9 @@ services:
       - taiga-protected
     networks:
       - taiga
+    labels:
+      # auto-generated domain for the gateway
+      coolify.domain: nkgc4g4gs8wgwkgos0gc0kk4.95.217.187.120.sslip.io
 
 volumes:
   taiga-db-data:
