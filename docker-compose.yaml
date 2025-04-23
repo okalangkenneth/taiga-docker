@@ -129,7 +129,7 @@ services:
   taiga-gateway:
     image: nginx:alpine
     ports:
-      - "9090:80"
+      - "80:80"
     volumes:
       - ./taiga-gateway:/etc/nginx/conf.d:ro
       - taiga-static-data:/taiga-back/static:ro
