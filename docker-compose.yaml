@@ -20,14 +20,14 @@ services:
   taiga-back:
     build: ./taiga-back-custom
     environment:
-      DJANGO_SETTINGS_MODULE: settings.local
+      DJANGO_SETTINGS_MODULE: settings.config
       POSTGRES_DB: taiga
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres123
       POSTGRES_HOST: taiga-db
       TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
       TAIGA_SITES_SCHEME: http
-      TAIGA_SITES_DOMAIN: nkgc4g4gs8wgwkgos0gc0kk4.95.217.187.120.sslip.io
+      TAIGA_SITES_DOMAIN: ghi8oco8k4w04k4o8coco848.95.217.187.120.sslip.io
       PUBLIC_REGISTER_ENABLED: "True"
     volumes:
       - taiga-static-data:/taiga-back/static
@@ -50,7 +50,7 @@ services:
       POSTGRES_HOST: taiga-db
       TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
       TAIGA_SITES_SCHEME: http
-      TAIGA_SITES_DOMAIN: nkgc4g4gs8wgwkgos0gc0kk4.95.217.187.120.sslip.io
+      TAIGA_SITES_DOMAIN: ghi8oco8k4w04k4o8coco848.95.217.187.120.sslip.io
       PUBLIC_REGISTER_ENABLED: "True"
     volumes:
       - taiga-static-data:/taiga-back/static
@@ -78,7 +78,7 @@ services:
   taiga-front:
     image: taigaio/taiga-front:6.7.0
     environment:
-      TAIGA_URL: "http://nkgc4g4gs8wgwkgos0gc0kk4.95.217.187.120.sslip.io"
+      TAIGA_SITES_DOMAIN: ghi8oco8k4w04k4o8coco848.95.217.187.120.sslip.io
       PUBLIC_REGISTER_ENABLED: "true"
     depends_on:
       - taiga-back
@@ -135,10 +135,8 @@ services:
     networks:
       - taiga
     labels:
-      - "coolify.domain=nkgc4g4gs8wgwkgos0gc0kk4.95.217.187.120.sslip.io"
+  - "coolify.domain=ghi8oco8k4w04k4o8coco848.95.217.187.120.sslip.io"
       
-environment:
-  DJANGO_SETTINGS_MODULE: settings.config
 
 volumes:
   taiga-db-data:
