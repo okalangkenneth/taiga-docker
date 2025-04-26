@@ -1,13 +1,10 @@
-# Dockerfile
-FROM taigaio/taiga-back:latest
+FROM nginx:1.23
 
-USER root
+# Remove the default configuration
+RUN rm /etc/nginx/conf.d/default.conf
 
-# Install CORS headers package
-RUN pip install django-cors-headers
+# Copy your configuration as a file, not a directory
+COPY taiga-nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy in your Django settings overrides
-COPY settings/config.py /taiga-back/settings/config.py
-COPY settings/local.py  /taiga-back/settings/local.py
-
-USER taiga
+# Make sure it's a file
+RUN test -f /etc/nginx/conf.d/default.conf || exit 1
