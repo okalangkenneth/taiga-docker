@@ -65,19 +65,19 @@ services:
       - taiga
 
   taiga-async-rabbitmq:
-    image: rabbitmq:3.8-management-alpine
-    environment:
-      RABBITMQ_ERLANG_COOKIE: secret-erlang-cookie
-      RABBITMQ_DEFAULT_USER: taiga
-      RABBITMQ_DEFAULT_PASS: taiga123
-      RABBITMQ_DEFAULT_VHOST: taiga
-    hostname: taiga-async-rabbitmq
-    volumes:
-      - taiga-async-rabbitmq-data:/var/lib/rabbitmq
-    networks:
-      - taiga
-    healthcheck:
-    test: ["CMD", "rabbitmqctl", "ping"]
+  image: rabbitmq:3.8-management-alpine
+  environment:
+    RABBITMQ_ERLANG_COOKIE: secret-erlang-cookie
+    RABBITMQ_DEFAULT_USER: taiga
+    RABBITMQ_DEFAULT_PASS: taiga123
+    RABBITMQ_DEFAULT_VHOST: taiga
+  hostname: taiga-async-rabbitmq
+  volumes:
+    - taiga-async-rabbitmq-data:/var/lib/rabbitmq
+  networks:
+    - taiga
+  healthcheck:
+    test: rabbitmqctl ping
     interval: 10s
     timeout: 5s
     retries: 5
@@ -105,23 +105,23 @@ services:
       - taiga
 
   taiga-events-rabbitmq:
-    image: rabbitmq:3.8-management-alpine
-    environment:
-      RABBITMQ_ERLANG_COOKIE: secret-erlang-cookie
-      RABBITMQ_DEFAULT_USER: taiga
-      RABBITMQ_DEFAULT_PASS: taiga123
-      RABBITMQ_DEFAULT_VHOST: taiga
-    hostname: taiga-events-rabbitmq
-    volumes:
-      - taiga-events-rabbitmq-data:/var/lib/rabbitmq
-    networks:
-      - taiga
-    healthcheck:
-      test: ["CMD", "rabbitmqctl", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
+  image: rabbitmq:3.8-management-alpine
+  environment:
+    RABBITMQ_ERLANG_COOKIE: secret-erlang-cookie
+    RABBITMQ_DEFAULT_USER: taiga
+    RABBITMQ_DEFAULT_PASS: taiga123
+    RABBITMQ_DEFAULT_VHOST: taiga
+  hostname: taiga-events-rabbitmq
+  volumes:
+    - taiga-events-rabbitmq-data:/var/lib/rabbitmq
+  networks:
+    - taiga
+  healthcheck:
+    test: rabbitmqctl ping
+    interval: 10s
+    timeout: 5s
+    retries: 5
+    start_period: 30s
 
   taiga-protected:
     image: taigaio/taiga-protected:6.7.0
