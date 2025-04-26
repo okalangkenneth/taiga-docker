@@ -58,8 +58,9 @@ services:
     depends_on:
       taiga-db:
         condition: service_healthy
-      taiga-async-rabbitmq:
-        condition: service_healthy
+      # Temporarily comment out the RabbitMQ dependency
+    # taiga-async-rabbitmq:
+    #   condition: service_healthy
     networks:
       - taiga
 
@@ -76,10 +77,11 @@ services:
     networks:
       - taiga
     healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+    test: ["CMD", "rabbitmqctl", "ping"]
+    interval: 10s
+    timeout: 5s
+    retries: 5
+    start_period: 30s
 
   taiga-front:
     image: taigaio/taiga-front:6.7.0
@@ -114,6 +116,12 @@ services:
       - taiga-events-rabbitmq-data:/var/lib/rabbitmq
     networks:
       - taiga
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   taiga-protected:
     image: taigaio/taiga-protected:6.7.0
