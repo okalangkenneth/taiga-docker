@@ -95,6 +95,7 @@ services:
     environment:
       RABBITMQ_USER: taiga
       RABBITMQ_PASS: taiga123
+      RABBITMQ_VHOST: taiga  # This is important!
       TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
     depends_on:
       - taiga-events-rabbitmq
