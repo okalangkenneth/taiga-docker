@@ -56,25 +56,30 @@ services:
       - taiga-static-data:/taiga-back/static
       - taiga-media-data:/taiga-back/media
     depends_on:
-      - taiga-db
-      - taiga-events-rabbitmq
-      - taiga-async-rabbitmq
+    taiga-db:
+      condition: service_healthy
+    taiga-async-rabbitmq:
+      condition: service_healthy
     networks:
       - taiga
 
   taiga-async-rabbitmq:
-    image: rabbitmq:3.8-management-alpine
-    environment:
-      RABBITMQ_ERLANG_COOKIE: secret-erlang-cookie
-      RABBITMQ_DEFAULT_USER: taiga
-      RABBITMQ_DEFAULT_PASS: taiga123
-      RABBITMQ_DEFAULT_VHOST: taiga
-    hostname: taiga-async-rabbitmq
-    volumes:
-      - taiga-async-rabbitmq-data:/var/lib/rabbitmq
-    networks:
-      - taiga
-
+  image: rabbitmq:3.8-management-alpine
+  environment:
+    RABBITMQ_ERLANG_COOKIE: secret-erlang-cookie
+    RABBITMQ_DEFAULT_USER: taiga
+    RABBITMQ_DEFAULT_PASS: taiga123
+    RABBITMQ_DEFAULT_VHOST: taiga
+  hostname: taiga-async-rabbitmq
+  volumes:
+    - taiga-async-rabbitmq-data:/var/lib/rabbitmq
+  networks:
+    - taiga
+  healthcheck:
+    test: ["CMD", "rabbitmqctl", "status"]
+    interval: 5s
+    timeout: 5s
+    retries: 5
   taiga-front:
     image: taigaio/taiga-front:6.7.0
     environment:
