@@ -1,7 +1,0 @@
-# settings/config.py.prod.example
-from .common import *
-
-DEBUG = False
-ALLOWED_HOSTS = ["your.taiga.domain.com"]
-# any other prod-only overrides…
-
