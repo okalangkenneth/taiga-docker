@@ -33,30 +33,30 @@ services:
       retries: 5
       start_period: 10s
 
-  # taiga-back:
-  #   build:
-  #     context: ./taiga-back-custom
-  #     dockerfile: Dockerfile
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #     redis:
-  #       condition: service_healthy
-  #   networks:
-  #     - taiga_network
-  #   environment:
-  #     POSTGRES_DB: taiga
-  #     POSTGRES_USER: taiga
-  #     POSTGRES_PASSWORD: taigapassword
-  #     POSTGRES_HOST: postgres
-  #     DJANGO_SETTINGS_MODULE: settings.config
-  #     TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
-  #     TAIGA_SITES_DOMAIN: ${TAIGA_DOMAIN}
-  #     TAIGA_SITES_SCHEME: http
-  #     TAIGA_REDIS_HOST: redis
-  #   volumes:
-  #     - taiga_back_media:/taiga-back/media
-  #     - taiga_back_static:/taiga-back/static
+  taiga-back:
+    build:
+      context: ./taiga-back-custom
+      dockerfile: Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - taiga_network
+    environment:
+      POSTGRES_DB: taiga
+      POSTGRES_USER: taiga
+      POSTGRES_PASSWORD: taigapassword
+      POSTGRES_HOST: postgres
+      DJANGO_SETTINGS_MODULE: settings.config
+      TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
+      TAIGA_SITES_DOMAIN: ${TAIGA_DOMAIN}
+      TAIGA_SITES_SCHEME: http
+      TAIGA_REDIS_HOST: redis
+    volumes:
+      - taiga_back_media:/taiga-back/media
+      - taiga_back_static:/taiga-back/static
 
   # taiga-front:
   #   image: taigaio/taiga-front:6.7.0
