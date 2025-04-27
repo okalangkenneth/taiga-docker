@@ -65,9 +65,9 @@ services:
     networks:
       - taiga_network
     environment:
-      TAIGA_URL: http://http://qsk48wwsgwkwcs884ggwk8gw.95.217.187.120.sslip.io
-      TAIGA_WEBSOCKETS_URL: ws://http://qsk48wwsgwkwcs884ggwk8gw.95.217.187.120.sslip.io/events
-      TAIGA_API_URL: http://http://qsk48wwsgwkwcs884ggwk8gw.95.217.187.120.sslip.io/api/v1/
+      TAIGA_URL: http://qsk48wwsgwkwcs884ggwk8gw.95.217.187.120.sslip.io
+      TAIGA_WEBSOCKETS_URL: ws:qsk48wwsgwkwcs884ggwk8gw.95.217.187.120.sslip.io/events
+      TAIGA_API_URL: http://qsk48wwsgwkwcs884ggwk8gw.95.217.187.120.sslip.io/api/v1/
 
   nginx:
     image: nginx:alpine
