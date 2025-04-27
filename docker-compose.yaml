@@ -131,6 +131,8 @@ services:
 
   taiga-gateway:
     image: nginx:alpine
+    ports:
+      - "80:80"
     volumes:
       - taiga-static-data:/taiga-back/static:ro
       - taiga-media-data:/taiga-back/media:ro
