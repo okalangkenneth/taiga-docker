@@ -51,7 +51,7 @@ services:
       POSTGRES_HOST: postgres
       DJANGO_SETTINGS_MODULE: settings.config
       TAIGA_SECRET_KEY: j5_e4atjh#mo)f9olk@i!jkk=7e5!$b(yd!v6*0rx$7bq(9lwl
-      TAIGA_SITES_DOMAIN: http://qsk48wwsgwkwcs884ggwk8gw.95.217.187.120.sslip.io
+      TAIGA_SITES_DOMAIN: qsk48wwsgwkwcs884ggwk8gw.95.217.187.120.sslip.io
       TAIGA_SITES_SCHEME: http
       TAIGA_REDIS_HOST: redis
     volumes:
