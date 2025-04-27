@@ -1,9 +1,11 @@
-test-service:
-  image: nginx:alpine
-  command: >
-    /bin/sh -c "echo 'This is a test page from Nginx!' > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'"
-  ports:
-    - "8080:80"
-  labels:
-    - "coolify.domain=ghi8oco8k4w04k4o8coco848.95.217.187.120.sslip.io"
-    - "coolify.default=true"
+version: "3.8"
+
+services:
+  test-service:
+    image: nginx:alpine
+    command: >
+      /bin/sh -c "echo 'This is a test page from Nginx!' > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'"
+    labels:
+      - "coolify.domain=ghi8oco8k4w04k4o8coco848.95.217.187.120.sslip.io"
+      - "coolify.default=true"
+      - "coolify.managed=true"
