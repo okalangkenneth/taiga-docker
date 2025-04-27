@@ -58,16 +58,16 @@ services:
       - taiga_back_media:/taiga-back/media
       - taiga_back_static:/taiga-back/static
 
-  # taiga-front:
-  #   image: taigaio/taiga-front:6.7.0
-  #   depends_on:
-  #     - taiga-back
-  #   networks:
-  #     - taiga_network
-  #   environment:
-  #     TAIGA_URL: http://${TAIGA_DOMAIN}
-  #     TAIGA_WEBSOCKETS_URL: ws://${TAIGA_DOMAIN}/events
-  #     TAIGA_API_URL: http://${TAIGA_DOMAIN}/api/v1/
+  taiga-front:
+    image: taigaio/taiga-front:6.7.0
+    depends_on:
+      - taiga-back
+    networks:
+      - taiga_network
+    environment:
+      TAIGA_URL: http://${TAIGA_DOMAIN}
+      TAIGA_WEBSOCKETS_URL: ws://${TAIGA_DOMAIN}/events
+      TAIGA_API_URL: http://${TAIGA_DOMAIN}/api/v1/
 
   # nginx:
   #   image: nginx:alpine
